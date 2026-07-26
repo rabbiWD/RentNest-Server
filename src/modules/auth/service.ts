@@ -32,13 +32,6 @@ const registerUser = async (payload: RegisterUserPayload) =>{
         }
     });
 
-    // await prisma.profile.create({
-    //     data:{
-    //         userId: createdUser.id,
-    //         profilePhoto
-    //     }
-    // })
-
     const user = await prisma.user.findUnique({
         where: { 
             id: createdUser.id,
@@ -46,7 +39,10 @@ const registerUser = async (payload: RegisterUserPayload) =>{
          },
          omit: {
             password: true
-         }
+         },
+         include: {
+            profile: true
+        }
     })
     return user;
 };
@@ -96,8 +92,22 @@ const accessToken = jwtUtils.createToken(
     }
 };
 
+const getMyProfile = async (userId: string) => {
+    const user = await prisma.user.findUniqueOrThrow({
+        where: { id: userId },
+        omit: {
+            password: true
+        },
+        include: {
+            profile: true
+        }
+    })
+    return user;
+}
+
 
 export const authService = {
     registerUser,
     loginUser,
+    getMyProfile
 }
