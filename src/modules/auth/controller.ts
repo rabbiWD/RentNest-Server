@@ -6,7 +6,7 @@ import httpStatus from "http-status";
 
 const registerUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const payload = req.body;
-  const user = await authService.registerUserIntoDB(payload);
+  const user = await authService.registerUser(payload);
 
     sendResponse(res, {
         success: true,
@@ -19,7 +19,37 @@ const registerUser = catchAsync(async (req: Request, res: Response, next: NextFu
 
 });
 
+const loginUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const payload = req.body;
+    const {user, accessToken, refreshToken } = await authService.loginUser(payload);
+
+    res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "none",
+        maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "none",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "User login successfully",
+        data: {
+            user,
+            accessToken,
+            refreshToken
+        }
+    })
+});
+
 export const authController = {
   registerUser,
-  
+  loginUser,
 };
