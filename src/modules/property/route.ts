@@ -13,9 +13,6 @@ router.get(
     propertyController.getPropertyById
 );
 
-router.get(
-    "/categories",
-    propertyController.getAllCategories
-);
+
 
 export const propertyRoutes = router;
