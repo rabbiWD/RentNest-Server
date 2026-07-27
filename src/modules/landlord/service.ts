@@ -150,73 +150,68 @@ const getLandlordRequests = async (
 /**
  * Approve / Reject Rental Request
  */
-// const updateRentalRequestStatus = async (
-//     requestId: string,
-//     landlordId: string,
-//     data: IUpdateRentalRequestPayload
-// ) => {
+const updateRentalRequest = async (
+  requestId: string,
+  landlordId: string,
+  payload: IUpdateRentalRequestPayload
+) => {
+  // Check request exists and belongs to landlord's property
+  const rentalRequest = await prisma.rentalRequest.findFirstOrThrow({
+    where: {
+      id: requestId,
+      property: {
+        landlordId,
+      },
+    },
+  });
 
-//     // Check whether request belongs
-//     // to one of this landlord's properties
-//     const rentalRequest =
-//         await prisma.rentalRequest.findFirstOrThrow({
-//             where: {
-//                 id: requestId,
+  // Only APPROVED or REJECTED allowed
+  if (!["APPROVED", "REJECTED"].includes(payload.status)) {
+    throw new Error("Status must be APPROVED or REJECTED");
+  }
 
-//                 property: {
-//                     landlordId,
-//                 },
-//             },
+  // Prevent updating an already processed request
+  if (rentalRequest.status !== "PENDING") {
+    throw new Error("This rental request has already been processed");
+  }
 
-//             select: {
-//                 id: true,
-//                 status: true,
-//                 propertyId: true,
-//             },
-//         });
+  const result = await prisma.rentalRequest.update({
+    where: {
+      id: requestId,
+    },
 
+    data: {
+      status: payload.status,
+      approvedAt:
+        payload.status === "APPROVED"
+          ? new Date()
+          : null,
+    },
 
-//     // Same status check
-//     if (rentalRequest.status === data.status) {
-//         throw new Error(
-//             `Rental request is already ${data.status}.`
-//         );
-//     }
+    include: {
+      property: {
+        select: {
+          id: true,
+          title: true,
+          address: true,
+          city: true,
+          rentPrice: true,
+        },
+      },
 
+      tenant: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+        },
+      },
+    },
+  });
 
-//     const updatedRequest =
-//         await prisma.rentalRequest.update({
-//             where: {
-//                 id: requestId,
-//             },
-
-//             data: {
-//                 status: data.status,
-//             },
-
-//             include: {
-//                 tenant: {
-//                     select: {
-//                         id: true,
-//                         name: true,
-//                         email: true,
-//                     },
-//                 },
-
-//                 property: {
-//                     select: {
-//                         id: true,
-//                         title: true,
-//                         address: true,
-//                         city: true,
-//                         rentPrice: true,
-//                     },
-//                 },
-//             },
-//         });
-
-//     return updatedRequest;
-// };
+  return result;
+};
 
 
 export const landlordService = {
@@ -224,4 +219,5 @@ export const landlordService = {
     updateProperty,
     deleteProperty,
     getLandlordRequests,
+    updateRentalRequest
 }

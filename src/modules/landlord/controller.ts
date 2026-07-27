@@ -119,9 +119,40 @@ const getLandlordRequests = catchAsync(
   }
 );
 
+const updateRentalRequest = catchAsync(
+  async (req: Request, res: Response) => {
+    const landlordId = req.user?.id;
+    const requestId = req.params.id as string;
+
+    if (!requestId) {
+      throw new Error("Rental Request Id is required in params");
+    }
+
+    if (!landlordId) {
+      throw new Error("Landlord Id not found");
+    }
+
+    const payload = req.body;
+
+    const result = await landlordService.updateRentalRequest(
+      requestId,
+      landlordId,
+      payload
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: `Rental request ${payload.status.toLowerCase()} successfully`,
+      data: result,
+    });
+  }
+);
+
 export const landlordController = {
     createProperty,
     updateProperty,
     deleteProperty,
-    getLandlordRequests
+    getLandlordRequests,
+    updateRentalRequest
 }
