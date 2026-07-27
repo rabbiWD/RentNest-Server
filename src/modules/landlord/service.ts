@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma";
-import { ICreatePropertyPayload } from "./interface";
+import { ICreatePropertyPayload, IUpdatePropertyPayload } from "./interface";
 
 /**
  * Create Property
@@ -30,7 +30,53 @@ const createProperty = async (
     return property;
 };
 
+/**
+ * Update Property
+ */
+const updateProperty = async (
+    propertyId: string,
+    landlordId: string,
+    payload: IUpdatePropertyPayload
+) => {
+
+    // First check whether property belongs to this landlord
+   const property = await prisma.property.findUniqueOrThrow({
+        where: {
+            id: propertyId,
+            // landlordId,
+        },
+    });
+
+    if ( property.landlordId !== landlordId) {
+    throw new Error("You are not the owner of this property!");
+  }
+
+    const result = await prisma.property.update({
+        where: {
+            id: propertyId,
+        },
+
+        data: payload,
+
+        include: {
+            category: true,
+
+            landlord: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    phone: true,
+                },
+            },
+        },
+    });
+
+    return result;
+};
+
 
 export const landlordService = {
     createProperty,
+    updateProperty,
 }
