@@ -5,6 +5,7 @@ import cors from "cors";
 import config from "./config";
 import { authRoutes } from "./modules/auth/route";
 import { propertyRoutes } from "./modules/property/route";
+import { landlordRoutes } from "./modules/landlord/route";
 
 
 const app: Application = express();
@@ -24,7 +25,8 @@ app.get("/", async (req: Request, res: Response)=>{
 });
 
 app.use("/api/auth", authRoutes)
-app.use("/api/properties", propertyRoutes)
+app.use("/api/properties", propertyRoutes);
+app.use("/api/landlord", landlordRoutes)
 
 
 export default app;
