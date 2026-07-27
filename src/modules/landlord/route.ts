@@ -18,6 +18,7 @@ landlordController.deleteProperty
 );
 
 router.get("/requests", auth(UserRole.LANDLORD),
+landlordController.getLandlordRequests
 );
 
 router.patch("requests/:id", auth(UserRole.LANDLORD),

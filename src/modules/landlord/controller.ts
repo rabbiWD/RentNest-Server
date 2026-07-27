@@ -97,8 +97,31 @@ const deleteProperty = catchAsync(async (req: Request, res: Response) => {
     data: null,
   });
 });
+
+const getLandlordRequests = catchAsync(
+  async (req: Request, res: Response) => {
+    const landlordId = req.user?.id;
+
+    if (!landlordId) {
+      throw new Error("Landlord Id not found");
+    }
+
+    const result = await landlordService.getLandlordRequests(
+      landlordId
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Rental requests retrieved successfully",
+      data: result,
+    });
+  }
+);
+
 export const landlordController = {
     createProperty,
     updateProperty,
-    deleteProperty
+    deleteProperty,
+    getLandlordRequests
 }
