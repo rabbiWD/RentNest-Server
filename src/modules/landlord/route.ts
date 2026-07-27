@@ -22,6 +22,7 @@ landlordController.getLandlordRequests
 );
 
 router.patch("requests/:id", auth(UserRole.LANDLORD),
+landlordController.updateRentalRequest
 );
 
 export const landlordRoutes = router;
