@@ -4,6 +4,8 @@ import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import config from "./config";
 import { authRoutes } from "./modules/auth/route";
+import { propertyRoutes } from "./modules/property/route";
+
 
 const app: Application = express();
 
@@ -22,6 +24,7 @@ app.get("/", async (req: Request, res: Response)=>{
 });
 
 app.use("/api/auth", authRoutes)
+app.use("/api/properties", propertyRoutes)
 
 
 export default app;
