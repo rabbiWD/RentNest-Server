@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
 import { landlordService } from "./service";
 import { sendResponse } from "../../utils/sendResponse";
@@ -18,7 +18,7 @@ const createProperty = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const updateProperty = catchAsync(async (req: Request, res: Response) => {
+const updateProperty = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const landlordId = req.user?.id;
      const propertyId = req.params.id as string;
 
@@ -46,7 +46,59 @@ const updateProperty = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// const deleteProperty = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+//     const landlordId = req.user?.id;
+//      const propertyId = req.params.propertyId as string;
+
+//      console.log("PARAMS:", req.params);
+// console.log("PROPERTY ID:", req.params.id);
+
+
+//     if(!propertyId){
+//         throw new Error("Property Id Required in Params")
+//     }
+
+//    await landlordService.deleteProperty(
+//       propertyId,
+//       landlordId as string,
+
+//   );
+
+//   sendResponse(res, {
+//     success: true,
+//     statusCode: httpStatus.OK,
+//     message: "Property deleted successfully",
+//     data: null,
+//   });
+// });
+
+
+const deleteProperty = catchAsync(async (req: Request, res: Response) => {
+  const landlordId = req.user?.id;
+  const propertyId = req.params.id;
+
+  if (typeof propertyId !== "string" || propertyId.trim() === "") {
+    throw new Error("Property Id Required in Params");
+  }
+
+  if (!landlordId) {
+    throw new Error("Landlord Id not found");
+  }
+
+   await landlordService.deleteProperty(
+    propertyId,
+    landlordId
+  );
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Property deleted successfully",
+    data: null,
+  });
+});
 export const landlordController = {
     createProperty,
-    updateProperty
+    updateProperty,
+    deleteProperty
 }

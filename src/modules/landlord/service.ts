@@ -75,8 +75,35 @@ const updateProperty = async (
     return result;
 };
 
+const deleteProperty = async (
+    propertyId: string,
+    landlordId: string
+) => {
+
+    // Check ownership
+    const property = await prisma.property.findFirstOrThrow({
+        where: {
+            id: propertyId,
+            landlordId,
+        },
+    });
+
+    if( property.landlordId !== landlordId) {
+    throw new Error("You are not the owner of this property!");
+  }
+
+     await prisma.property.delete({
+        where: {
+            id: propertyId,
+        },
+    });
+
+    return property;
+};
+
 
 export const landlordService = {
     createProperty,
     updateProperty,
+    deleteProperty
 }
