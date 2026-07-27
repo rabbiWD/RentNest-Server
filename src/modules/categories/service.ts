@@ -1,16 +1,34 @@
 import { prisma } from "../../lib/prisma";
+import { ICreateCategory } from "./interface";
 
 
-const getAllCategories = async () => {
-    const categories = await prisma.category.findMany({
-        orderBy: {
-            name: "asc"
-        }
-    });
+const createCategory = async (payload: ICreateCategory) => {
+  const isExists = await prisma.category.findUnique({
+    where: {
+      name: payload.name,
+    },
+  });
 
-    return categories;
+  if (isExists) {
+    throw new Error("Category already exists");
+  }
+
+  return await prisma.category.create({
+    data: payload,
+  });
 };
 
+// const getAllCategories = async () => {
+//     const categories = await prisma.category.findMany({
+//         orderBy: {
+//             name: "asc"
+//         }
+//     });
+
+//     return categories;
+// };
+
 export const categoryService = {
-    getAllCategories
+    createCategory,
+    // getAllCategories
 }

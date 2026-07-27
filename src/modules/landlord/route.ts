@@ -8,7 +8,7 @@ const router = Router();
 
 
 router.post(
-  "/properties",
+  "/",
   auth(UserRole.LANDLORD),
   landlordController.createProperty
 );

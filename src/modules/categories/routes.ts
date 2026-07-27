@@ -3,9 +3,11 @@ import { categoryController } from "./controller";
 
 const router = Router();
 
-router.get(
-    "/",
-    categoryController.getAllCategories
-);
+router.post("/",categoryController.createCategory);
+
+// router.get(
+//     "/",
+//     categoryController.getAllCategories
+// );
 
 export const categoryRoutes = router;
