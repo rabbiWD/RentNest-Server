@@ -53,7 +53,35 @@ const getMyRentalRequests = catchAsync(
   }
 );
 
+const getRentalRequestById = catchAsync(
+  async (req: Request, res: Response) => {
+    const tenantId = req.user?.id;
+    const rentalRequestId = req.params.id as string;
+
+    if (!tenantId) {
+      throw new Error("Tenant Id not found");
+    }
+
+    if (!rentalRequestId) {
+      throw new Error("Rental Request Id is required in params");
+    }
+
+    const result = await rentalService.getRentalRequestById(
+      rentalRequestId,
+      tenantId
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Rental request details retrieved successfully",
+      data: result,
+    });
+  }
+);
+
 export const rentalController = {
     createRentalRequest,
-    getMyRentalRequests
+    getMyRentalRequests,
+    getRentalRequestById
 }

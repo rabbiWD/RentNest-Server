@@ -100,7 +100,37 @@ const getMyRentalRequests = async (
   return rentalRequests;
 };
 
+const getRentalRequestById = async (
+  rentalRequestId: string,
+  tenantId: string
+) => {
+  const rentalRequest = await prisma.rentalRequest.findFirstOrThrow({
+    where: {
+      id: rentalRequestId,
+      tenantId,
+    },
+
+    include: {
+      property: {
+        include: {
+          category: true,
+          landlord: {
+            omit: {
+              password: true,
+            },
+          },
+        },
+      },
+
+      payment: true,
+    },
+  });
+
+  return rentalRequest;
+};
+
 export const rentalService = {
     createRentalRequest,
     getMyRentalRequests,
+    getRentalRequestById
 }

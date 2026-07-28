@@ -17,10 +17,10 @@ router.get(
   rentalController.getMyRentalRequests
 );
 
-// router.get(
-//   "/:id",
-//   auth(UserRole.TENANT),
-//   rentalController.getRentalRequestById
-// );
+router.get(
+  "/:id",
+  auth(UserRole.TENANT),
+  rentalController.getRentalRequestById
+);
 
 export const rentalRoutes = router;

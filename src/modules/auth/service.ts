@@ -55,7 +55,7 @@ const user = await prisma.user.findUniqueOrThrow({
         where: { email }
     });
 
-     if(user.status ==="BLOCKED"){
+     if(user.status ==="BANNED"){
         throw new Error("Your account has been blocked. Please contact support.")
     }
 

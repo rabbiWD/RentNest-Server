@@ -1,8 +1,5 @@
 
-
-
 import { NextFunction, Request, Response } from "express";
-// import { Role } from "../../generated/prisma/enums";
 import { prisma } from "../lib/prisma";
 import { catchAsync } from "../utils/catchAsync";
 import { jwtUtils } from "../utils/jwt";
@@ -61,7 +58,7 @@ export const auth = (...requiredRoles: UserRole[]) => {
         throw new Error("User not found. Please log in again.")
     }
 
-    if(user.status ==="BLOCKED"){
+    if(user.status ==="BANNED"){
         throw new Error("Your account has been blocked. Please contact support.")
     }
 
