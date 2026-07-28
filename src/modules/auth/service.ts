@@ -56,7 +56,7 @@ const user = await prisma.user.findUniqueOrThrow({
     });
 
      if(user.status ==="BANNED"){
-        throw new Error("Your account has been blocked. Please contact support.")
+        throw new Error("Your account has been banned. Please contact support.")
     }
 
     const isPasswordMatched = await bcrypt.compare(password, user.password);
@@ -85,9 +85,12 @@ const accessToken = jwtUtils.createToken(
     config.jwt_refresh_secret,
     config.jwt_refresh_expires_in as SignOptions
 
-)
+  );
+
+  const { password: _, ...userWithoutPassword } = user;
+
     return {
-        user,
+        user: userWithoutPassword,
         accessToken,
         refreshToken
     }
