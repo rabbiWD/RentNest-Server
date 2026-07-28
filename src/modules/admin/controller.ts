@@ -18,6 +18,28 @@ const getAllUsers = catchAsync(
   }
 );
 
+const updateUserStatus = catchAsync(
+  async (req: Request, res: Response) => {
+    const userId = req.params.id as string;
+
+    if (!userId) {
+      throw new Error("User Id is required in params");
+    }
+
+    const result = await adminService.updateUserStatus(
+      userId,
+      req.body
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "User status updated successfully",
+      data: result,
+    });
+  }
+);
 export const adminController = {
     getAllUsers,
+    updateUserStatus
 }
