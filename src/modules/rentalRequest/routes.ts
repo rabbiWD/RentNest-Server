@@ -11,11 +11,11 @@ router.post(
   rentalController.createRentalRequest
 );
 
-// router.get(
-//   "/",
-//   auth(UserRole.TENANT),
-//   rentalController.getMyRentalRequests
-// );
+router.get(
+  "/",
+  auth(UserRole.TENANT),
+  rentalController.getMyRentalRequests
+);
 
 // router.get(
 //   "/:id",

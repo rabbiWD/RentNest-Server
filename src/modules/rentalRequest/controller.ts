@@ -28,6 +28,32 @@ const createRentalRequest = catchAsync(
   }
 );
 
+const getMyRentalRequests = catchAsync(
+  async (req: Request, res: Response) => {
+    const tenantId = req.user?.id;
+
+    if (!tenantId) {
+      throw new Error("Tenant Id not found");
+    }
+
+    const query = req.query;
+    // as unknown as IRentalRequestQuery;
+
+    const result = await rentalService.getMyRentalRequests(
+      tenantId,
+      query
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Rental requests retrieved successfully",
+      data: result,
+    });
+  }
+);
+
 export const rentalController = {
     createRentalRequest,
+    getMyRentalRequests
 }

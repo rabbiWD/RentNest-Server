@@ -2,6 +2,7 @@
 import { prisma } from "../../lib/prisma";
 import {
   ICreateRentalRequest,
+  IRentalRequestQuery,
 } from "./interface";
 
 const createRentalRequest = async (
@@ -62,6 +63,44 @@ const createRentalRequest = async (
   return rentalRequest;
 };
 
+const getMyRentalRequests = async (
+  tenantId: string,
+  query: IRentalRequestQuery
+) => {
+  const rentalRequests = await prisma.rentalRequest.findMany({
+    where: {
+      tenantId,
+
+      ...(query.status && {
+        status: query.status,
+      }),
+    },
+
+    orderBy: {
+      createdAt: "desc",
+    },
+
+    include: {
+      property: {
+        include: {
+          category: true,
+
+          landlord: {
+            omit: {
+              password: true,
+            },
+          },
+        },
+      },
+
+      payment: true,
+    },
+  });
+
+  return rentalRequests;
+};
+
 export const rentalService = {
     createRentalRequest,
+    getMyRentalRequests,
 }
