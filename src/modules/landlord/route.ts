@@ -21,7 +21,7 @@ router.get("/requests", auth(UserRole.LANDLORD),
 landlordController.getLandlordRequests
 );
 
-router.patch("requests/:id", auth(UserRole.LANDLORD),
+router.patch("/requests/:id", auth(UserRole.LANDLORD),
 landlordController.updateRentalRequest
 );
 
