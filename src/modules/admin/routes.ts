@@ -20,6 +20,10 @@ router.patch(
 
 router.get("/properties", auth(UserRole.ADMIN),
 adminController.getAllProperties
-)
+);
+
+router.get("/rentals", auth(UserRole.ADMIN),
+  adminController.getAllRentalRequests
+);
 
 export const adminRoutes = router;
