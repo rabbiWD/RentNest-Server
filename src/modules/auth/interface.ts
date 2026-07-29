@@ -13,3 +13,10 @@ export interface RegisterUserPayload {
     phone: string;
     profilePhoto?: string;
 }
+
+export interface IUpdateProfilePayload {
+    name?: string;
+    phone?: string;
+    bio?: string;
+    profilePhoto?: string;
+}

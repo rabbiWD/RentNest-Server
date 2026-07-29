@@ -1,6 +1,6 @@
 import { prisma } from "../../lib/prisma";
 import bcrypt from "bcryptjs";
-import { ILoginUser, RegisterUserPayload } from "./interface";
+import { ILoginUser, RegisterUserPayload, IUpdateProfilePayload } from "./interface";
 import config from "../../config";
 import { jwtUtils } from "../../utils/jwt";
 import { SignOptions } from "jsonwebtoken";
@@ -107,11 +107,51 @@ const getMyProfile = async (userId: string) => {
         }
     })
     return user;
-}
+};
+
+const updateMyProfile = async (userId: string, payload: IUpdateProfilePayload) => {
+    const { name, phone, bio, profilePhoto } = payload;
+
+    const result = await prisma.$transaction(async (tx) => {
+        if (name || phone) {
+            await tx.user.update({
+                where: { id: userId },
+                data: {
+                    ...(name && { name }),
+                    ...(phone && { phone }),
+                },
+            });
+        }
+
+        if (bio !== undefined || profilePhoto !== undefined) {
+            await tx.profile.upsert({
+                where: { userId },
+                update: {
+                    ...(bio !== undefined && { bio }),
+                    ...(profilePhoto !== undefined && { profilePhoto }),
+                },
+                create: {
+                    userId,
+                    bio,
+                    profilePhoto,
+                },
+            });
+        }
+
+        return await tx.user.findUniqueOrThrow({
+            where: { id: userId },
+            omit: { password: true },
+            include: { profile: true },
+        });
+    });
+
+    return result;
+};
 
 
 export const authService = {
     registerUser,
     loginUser,
-    getMyProfile
+    getMyProfile,
+    updateMyProfile,
 }

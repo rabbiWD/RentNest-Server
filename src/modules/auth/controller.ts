@@ -59,14 +59,26 @@ const getMyProfile = catchAsync(async (req: Request, res: Response, next: NextFu
         data: {
             profile
         }
-    })
-    
-   
-    res.send("Get my profile");
+    });
+});
+
+const updateMyProfile = catchAsync(async (req: Request, res: Response) => {
+    const userId = req.user?.id as string;
+    const profile = await authService.updateMyProfile(userId, req.body);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "User profile updated successfully",
+        data: {
+            profile
+        }
+    });
 });
 
 export const authController = {
   registerUser,
   loginUser,
-  getMyProfile
+  getMyProfile,
+  updateMyProfile,
 };
