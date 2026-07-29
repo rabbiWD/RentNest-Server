@@ -10,6 +10,8 @@ import { categoryRoutes } from "./modules/categories/routes";
 import { rentalRoutes } from "./modules/rentalRequest/routes";
 import { adminRoutes } from "./modules/admin/routes";
 import { reviewRoutes } from "./modules/review/routes";
+import { notFound } from "./middlewares/notFound";
+import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 
 
 const app: Application = express();
@@ -36,5 +38,7 @@ app.use("/api/rentals", rentalRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/reviews", reviewRoutes);
 
+app.use(notFound);
+app.use(globalErrorHandler);
 
 export default app;
