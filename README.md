@@ -8,7 +8,7 @@
 [![Stripe](https://img.shields.io/badge/Stripe-Integration-635BFF?style=for-the-badge&logo=stripe&logoColor=white)](https://stripe.com/)
 [![pnpm](https://img.shields.io/badge/pnpm-10.0+-E650A7?style=for-the-badge&logo=pnpm&logoColor=white)](https://pnpm.io/)
 
-**RentNest** is a robust, production-grade RESTful API server powering a modern property rental and management ecosystem. Built with Express.js (v5), TypeScript, PostgreSQL, Prisma ORM, and Stripe, RentNest seamlessly connects **Tenants**, **Landlords**, and **Administrators** through secure authentication, property listings, rental request workflows, online payments, and review systems.
+**RentNest** is a robust, production-grade RESTful API server powering a modern property rental and management ecosystem. Built with Express.js (v5), TypeScript, PostgreSQL, Prisma ORM, and Stripe, RentNest seamlessly connects **Tenants**, **Landlords**, and **Admins** through secure authentication, property listings, rental request workflows, online payments, and review systems.
 
 ---
 
@@ -189,7 +189,7 @@ Make sure you have the following installed on your local machine:
    Configure your parameters in `.env`:
    ```env
    DATABASE_URL="postgresql://user:password@localhost:5432/rentnest_db?schema=public"
-   PORT=5000
+   PORT=7000
    APP_URL=http://localhost:3000
    BCRYPT_SALT_ROUNDS=12
 
@@ -214,7 +214,7 @@ Make sure you have the following installed on your local machine:
    ```bash
    pnpm dev
    ```
-   The server will start at `http://localhost:5000`.
+   The server will start at `http://localhost:7000`.
 
 6. **Listen for Stripe Webhooks (Optional for Payment Testing)**
    In a separate terminal window, run:
