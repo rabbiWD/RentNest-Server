@@ -4,19 +4,19 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { paymentService } from "./service";
 
-const createPaymentIntent = catchAsync(async (req: Request, res: Response) => {
+const createCheckoutSession = catchAsync(async (req: Request, res: Response) => {
   const tenantId = req.user?.id;
 
   if (!tenantId) {
     throw new Error("Tenant ID not found in session.");
   }
 
-  const result = await paymentService.createPaymentIntent(tenantId, req.body);
+  const result = await paymentService.createCheckoutSession(tenantId, req.body);
 
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.CREATED,
-    message: "Stripe payment intent created successfully",
+    message: "Stripe checkout session created successfully",
     data: result,
   });
 });
@@ -91,7 +91,8 @@ const handleWebhook = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const paymentController = {
-  createPaymentIntent,
+  createCheckoutSession,
+  createPaymentIntent: createCheckoutSession,
   confirmPayment,
   getMyPaymentHistory,
   getPaymentById,

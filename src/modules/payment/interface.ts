@@ -1,8 +1,12 @@
-
 export interface ICreatePaymentPayload {
   rentalRequestId: string;
+  successUrl?: string;
+  cancelUrl?: string;
 }
 
 export interface IConfirmPaymentPayload {
-  paymentIntentId: string;
+  sessionId?: string;
+  paymentIntentId?: string;
+  rentalRequestId?: string;
 }
+

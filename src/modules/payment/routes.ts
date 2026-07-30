@@ -14,7 +14,13 @@ router.post(
 router.post(
   "/create",
   auth(UserRole.TENANT),
-  paymentController.createPaymentIntent
+  paymentController.createCheckoutSession
+);
+
+router.post(
+  "/create-checkout-session",
+  auth(UserRole.TENANT),
+  paymentController.createCheckoutSession
 );
 
 router.post(
