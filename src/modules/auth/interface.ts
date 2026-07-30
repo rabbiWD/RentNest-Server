@@ -1,4 +1,6 @@
-import { UserRole } from "../../../generated/prisma/enums";
+// import { UserRole } from "../../../generated/prisma/enums";
+
+import { UserRole } from "../../generated/prisma/enums";
 
 export interface ILoginUser {
     email: string;

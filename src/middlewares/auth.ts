@@ -5,7 +5,7 @@ import { catchAsync } from "../utils/catchAsync";
 import { jwtUtils } from "../utils/jwt";
 import config from "../config";
 import { JwtPayload } from "jsonwebtoken";
-import { UserRole } from "../../generated/prisma/enums.js";
+import { UserRole } from "../generated/prisma/enums";
 
 declare global {
   namespace Express {
