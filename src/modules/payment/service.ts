@@ -407,7 +407,7 @@ const handleStripeWebhook = async (signature: string, rawBody: Buffer) => {
 
 export const paymentService = {
   createCheckoutSession,
-  createPaymentIntent: createCheckoutSession,
+  // createPaymentIntent: createCheckoutSession,
   confirmPayment,
   getMyPaymentHistory,
   getPaymentById,
