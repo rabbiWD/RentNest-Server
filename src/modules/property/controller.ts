@@ -31,20 +31,8 @@ const getPropertyById = catchAsync(async (req: Request, res: Response) => {
 });
 
 
-const getAllCategories = catchAsync(async (req: Request, res: Response) => {
-    const result = await propertyService.getAllCategories();
-
-    sendResponse(res, {
-        success: true,
-        statusCode: httpStatus.OK,
-        message: "Categories retrieved successfully",
-        data: result
-    })
-});
-
 
 export const propertyController = {
     getAllProperties,
     getPropertyById,
-    getAllCategories
 };
