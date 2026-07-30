@@ -1,6 +1,7 @@
+import { RentalRequestStatus } from "../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 import { ICreateReview } from "./interface";
-import { RentalRequestStatus } from "../../../generated/prisma/client";
+// import { RentalRequestStatus } from "../../../generated/prisma/client";
 
 // const createReview = async (
 //   tenantId: string,

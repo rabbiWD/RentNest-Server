@@ -1,4 +1,5 @@
-import { UserStatus } from "../../../generated/prisma/enums";
+// import { UserStatus } from "../../../generated/prisma/enums";
+import { UserStatus } from "../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 import { IUpdateUserStatus } from "./interface";
 

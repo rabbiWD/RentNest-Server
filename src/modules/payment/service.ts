@@ -1,13 +1,8 @@
 import Stripe from "stripe";
 import config from "../../config/index";
 import { prisma } from "../../lib/prisma";
-import {
-  PaymentProvider,
-  PaymentStatus,
-  PropertyStatus,
-  RentalRequestStatus,
-} from "../../../generated/prisma/enums.js";
 import { IConfirmPaymentPayload, ICreatePaymentPayload } from "./interface";
+import { PaymentProvider, PaymentStatus, PropertyStatus, RentalRequestStatus } from "../../generated/prisma/enums";
 
 const getStripeInstance = () => {
   if (!config.stripe_secret_key) {

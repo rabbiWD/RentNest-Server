@@ -1,4 +1,5 @@
-import { PropertyStatus, RentalRequestStatus } from "../../../generated/prisma/enums";
+// import { PropertyStatus, RentalRequestStatus } from "../../../generated/prisma/enums";
+import { PropertyStatus, RentalRequestStatus } from "../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 import { ICreatePropertyPayload, IUpdatePropertyPayload, IUpdateRentalRequestPayload } from "./interface";
 

@@ -1,4 +1,6 @@
-import { PropertyStatus } from "../../../generated/prisma/enums";
+// import { PropertyStatus } from "../../../generated/prisma/enums";
+
+import { PropertyStatus } from "../../generated/prisma/enums";
 
 export interface IPropertyQuery {
     location?: string;
